@@ -1,0 +1,2 @@
+-keep class com.jarvis.ai.engine.JarvisNative { *; }
+-keep class com.jarvis.ai.engine.TokenCallback { *; }

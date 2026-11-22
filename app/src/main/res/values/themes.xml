@@ -1,0 +1,7 @@
+<resources>
+    <style name="Theme.JarvisAI" parent="android:Theme.Material.NoActionBar">
+        <item name="android:statusBarColor">#060A12</item>
+        <item name="android:navigationBarColor">#060A12</item>
+        <item name="android:windowBackground">#060A12</item>
+    </style>
+</resources>
