@@ -147,8 +147,6 @@ Java_com_jarvis_ai_engine_JarvisNative_nativeLoadModel(
 
     llama_model_params mparams = llama_model_default_params();
     mparams.n_gpu_layers = 0;
-    mparams.use_mmap = true;
-    mparams.use_mlock = false;
 
     g_model = llama_model_load_from_file(modelPath.c_str(), mparams);
     if (!g_model) {
