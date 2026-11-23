@@ -34,10 +34,6 @@ class JarvisEngine(private val context: Context) {
         )
     }
 
-    /**
-     * Copies a user-picked .gguf file into internal app storage (filesDir/models/)
-     * so llama.cpp can mmap() it directly without Android FUSE/Download overhead.
-     */
     suspend fun importModelFile(
         uri: Uri,
         targetFileName: String,
@@ -49,7 +45,7 @@ class JarvisEngine(private val context: Context) {
 
         context.contentResolver.openInputStream(uri)?.use { input ->
             FileOutputStream(tmpFile).use { output ->
-                val buf = ByteArray(1024 * 1024) // 1 MB buffer
+                val buf = ByteArray(1024 * 1024)
                 var copied = 0L
                 while (true) {
                     val read = input.read(buf)
@@ -129,25 +125,19 @@ class JarvisEngine(private val context: Context) {
         val mediaMarker = if (attachImage) JarvisNative.nativeMediaMarker() else ""
 
         val userBlock = if (attachImage) {
-            "$mediaMarker
-$userPrompt"
+            "$mediaMarker\n$userPrompt"
         } else {
             userPrompt
         }
 
         val fullPrompt = buildString {
-            append("<|im_start|>system
-")
+            append("<|im_start|>system\n")
             append(SYSTEM_PROMPT)
-            append("<|im_end|>
-")
-            append("<|im_start|>user
-")
+            append("<|im_end|>\n")
+            append("<|im_start|>user\n")
             append(userBlock)
-            append("<|im_end|>
-")
-            append("<|im_start|>assistant
-")
+            append("<|im_end|>\n")
+            append("<|im_start|>assistant\n")
         }
 
         val acc = StringBuilder()
