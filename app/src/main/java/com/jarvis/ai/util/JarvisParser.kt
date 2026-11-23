@@ -43,12 +43,10 @@ object JarvisParser {
             }
         }
 
-        // Streaming/partial JSON fallback: extract "speech": "..." if already visible
-        val speechRegex = Regex(""speech"\s*:\s*"([^"]*)")
+        val speechRegex = Regex("\"speech\"\\s*:\\s*\"([^\"]*)")
         val partialSpeech = speechRegex.find(cleaned)?.groupValues?.getOrNull(1)
-            ?.replace("\n", "
-")
-            ?.replace("\"", """)
+            ?.replace("\\n", "\n")
+            ?.replace("\\\"", "\"")
 
         return JarvisActionPayload(
             speech = partialSpeech?.takeIf { it.isNotBlank() } ?: cleaned,
@@ -70,7 +68,7 @@ object JarvisParser {
                 escaped = false
                 continue
             }
-            if (ch == '\' && inString) {
+            if (ch == '\\' && inString) {
                 escaped = true
                 continue
             }
